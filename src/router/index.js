@@ -1,12 +1,13 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
-  { path: '/', name: 'home', component: () => import('../views/HomeView.vue') },
-  { path: '/cabinet', name: 'cabinet', component: () => import('../views/CabinetView.vue') },
-  { path: '/confirm/:id', name: 'confirm', component: () => import('../views/ConfirmView.vue') },
-  { path: '/template/:id', name: 'template', component: () => import('../views/TemplateView.vue') },
-  { path: '/result/:id', name: 'result', component: () => import('../views/ResultView.vue') },
-  { path: '/collection', name: 'collection', component: () => import('../views/CollectionView.vue') }
+  { path: '/', name: 'landing', component: () => import('../views/LandingView.vue') },
+  { path: '/admin', name: 'admin', component: () => import('../views/AdminView.vue') },
+  { path: '/admin/edit/:id', name: 'edit', component: () => import('../views/EditView.vue') },
+  { path: '/admin/generate/:id', name: 'generate', component: () => import('../views/GenerateView.vue') },
+  { path: '/admin/export/:id', name: 'export', component: () => import('../views/ExportView.vue') },
+  { path: '/menu', name: 'menu', component: () => import('../views/MenuView.vue') },
+  { path: '/plate/:id', name: 'plate', component: () => import('../views/PlateView.vue') }
 ]
 
 export default createRouter({

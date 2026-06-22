@@ -1,0 +1,287 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   HERBARIUM — 新复古植物图谱设计系统 (PRD v0.4 §2)
+   复古 · 植物插画 · 铜版画 · 羊皮纸 · 标本 · 自然
+   ============================================================ */
+
+:root {
+  --parchment: #f5edd6;
+  --parchment-2: #efe4c6;
+  --oak: #5c3d2e; /* 深橡木棕 */
+  --moss: #4a6b3a; /* 苔藓绿 */
+  --amber: #c4944a; /* 琥珀金 */
+  --slate: #7b8b6f; /* 石板灰 */
+  --dried: #b8937a; /* 干花色 */
+  --ink: #2c2416; /* 墨水黑 */
+  --seal-red: #8c3b2e;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: 'EB Garamond', 'Noto Serif SC', serif;
+  overflow-x: hidden;
+}
+
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+  min-height: 100%;
+  /* 羊皮纸纹理：暖色渐变 + 噪点 */
+  background-color: var(--parchment);
+  background-image: radial-gradient(circle at 30% 20%, rgba(196, 148, 74, 0.08), transparent 60%),
+    radial-gradient(circle at 80% 70%, rgba(74, 107, 58, 0.06), transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  overflow: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* ---------- 字体工具 ---------- */
+.font-title {
+  font-family: 'Cormorant Garamond', 'Noto Serif SC', serif;
+}
+.font-latin {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+}
+.font-fell {
+  font-family: 'IM Fell English', 'EB Garamond', serif;
+}
+.font-body {
+  font-family: 'EB Garamond', 'Noto Serif SC', serif;
+}
+
+.smallcaps {
+  font-variant: small-caps;
+  letter-spacing: 0.12em;
+}
+
+/* ---------- 铜版画线框 ---------- */
+.plate-frame {
+  border: 1px solid var(--oak);
+  box-shadow: inset 0 0 0 3px var(--parchment), inset 0 0 0 4px rgba(92, 61, 46, 0.5);
+  border-radius: 2px;
+  position: relative;
+}
+
+/* 双线装饰边 */
+.rule {
+  border: none;
+  height: 1px;
+  background: var(--oak);
+  opacity: 0.5;
+  margin: 14px 0;
+}
+.rule.double {
+  height: 4px;
+  background: none;
+  border-top: 1px solid var(--oak);
+  border-bottom: 1px solid var(--oak);
+  opacity: 0.6;
+}
+.rule-fancy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--oak);
+  font-size: 13px;
+}
+.rule-fancy::before,
+.rule-fancy::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--oak));
+  opacity: 0.5;
+}
+.rule-fancy::after {
+  background: linear-gradient(90deg, var(--oak), transparent);
+}
+
+/* ---------- 标本标签（虚线米色） ---------- */
+.specimen {
+  background: rgba(255, 252, 240, 0.7);
+  border: 1px dashed var(--dried);
+  border-radius: 2px;
+  padding: 8px 12px;
+  font-family: 'IM Fell English', serif;
+  color: var(--ink);
+}
+
+/* ---------- 火漆印章 ---------- */
+.wax-seal {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #a8493a, var(--seal-red) 60%, #6e2c22);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), inset 0 -3px 6px rgba(0, 0, 0, 0.3),
+    inset 0 3px 4px rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 240, 230, 0.85);
+  font-family: 'IM Fell English', serif;
+  font-size: 9px;
+  text-align: center;
+  line-height: 1.1;
+  letter-spacing: 0.05em;
+  position: relative;
+}
+.wax-seal::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 240, 230, 0.3);
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  color: var(--parchment);
+  background: var(--oak);
+  border: none;
+  border-radius: 2px;
+  padding: 13px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 0 rgba(44, 36, 22, 0.4);
+}
+.btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+.btn.moss {
+  background: var(--moss);
+}
+.btn.amber {
+  background: var(--amber);
+  color: var(--ink);
+}
+.btn-ghost {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: var(--oak);
+  background: transparent;
+  border: 1px solid var(--oak);
+  border-radius: 2px;
+  padding: 9px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-ghost:active {
+  background: rgba(92, 61, 46, 0.08);
+}
+
+/* ---------- 卡片 ---------- */
+.card {
+  background: rgba(255, 252, 240, 0.55);
+  border: 1px solid rgba(92, 61, 46, 0.35);
+  border-radius: 2px;
+  position: relative;
+}
+
+/* ---------- 标签 chip ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'EB Garamond', serif;
+  font-size: 13px;
+  padding: 3px 10px;
+  margin: 3px 5px 3px 0;
+  border-radius: 2px;
+  border: 1px solid var(--moss);
+  color: var(--moss);
+  background: rgba(74, 107, 58, 0.07);
+}
+.chip.amber {
+  border-color: var(--amber);
+  color: #9a6f2e;
+  background: rgba(196, 148, 74, 0.1);
+}
+
+.price {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  color: #9a6f2e;
+}
+
+/* ---------- 动效：水彩晕开 / 植物生长 ---------- */
+@keyframes bloom {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+.bloom {
+  animation: bloom 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+.grow {
+  transform-origin: bottom center;
+  animation: grow 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* 页面过渡：翻页 */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateX(18px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateX(-12px);
+}
+
+/* 页面容器 */
+.page {
+  min-height: 100vh;
+  padding: calc(20px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));
+}

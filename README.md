@@ -1,56 +1,53 @@
-# WHISKY ALCHEMY · 威士忌炼金术
+# HERBARIUM · 威士忌植物酒单
 
-> v0.3 · **先锋酸性设计（Acid Design）** — 把液态的酒炼成固态的图鉴。
+> v0.4 · **新复古植物图谱**(Vintage Botanical) — 不是金店,不是赛博,是一本 19 世纪植物学家的手稿。
 
-输入酒款关键字 → 抓取数据 → AI 提炼风味 → 选模板 → 生成先锋酸性风格品鉴图鉴卡。
+**酒吧老板的可编辑电子酒单。每瓶酒都是一幅复古植物图鉴,客人扫码看会动的菜单,
+老板一键导出视频发小红书抖音。**
 
-这是基于 [PRD v0.3](#) 实现的移动端 Web 前端原型。所有页面、酸性视觉语言、
-卡牌翻转交互、Dark Ambient BGM 均已落地，使用内置酒款知识库 mock 数据，
-**离线即可完整运行**（无需 豆包 / Seedream API 密钥）。
+移动端 Web 交互演示,内置一家 demo 酒吧的酒单,**离线即可完整体验**(无后端依赖)。
 
-## 技术栈
+## 体验路径(交互演示)
 
-- **Vue 3** + **Vue Router**（Hash 路由，SPA）
-- **Vite 5** 构建
-- **Tailwind CSS 3** + 自定义酸性设计系统（`src/styles/acid.css`）
-- **Web Audio API** 程序化合成 Dark Ambient BGM
+落地页有两扇门:
 
-## 设计系统（PRD §2）
+- **商家后台** `/admin` — 管理酒柜:添加 / 编辑 / 上下架(开关)/ 拖动排序(▲▼)/
+  换风格 / 导出 / 查看酒单链接 + 小程序码
+- **扫码看酒单** `/menu` — 客人视角:按产区分组的植物图鉴菜单 → 点酒款进全屏图鉴
+  (`/plate/:id`:铜版画植物牌 + 品鉴笔记 + 风味轮 + 拉丁学名标注)
+
+生成图鉴三条路径(`/admin/generate/:id`):**综合推荐 / 定制化 / 随机抽卡**。
+导出(`/admin/export/:id`):静态 PNG / 动态 GIF / 视频 MP4(模拟 FFmpeg 合成进度)。
+
+## 设计系统(PRD v0.4 §2)
 
 | 角色 | 色值 |
 |------|------|
-| 深渊黑 | `#0A0A0A` |
-| 液态铬金 | `#C9A84C → #F5D78E → #8B6914` |
-| 酸性青光 | `#00FFD1` |
-| 腐蚀紫 | `#8B5CF6` |
+| 羊皮纸底 | `#F5EDD6` |
+| 深橡木棕 | `#5C3D2E` |
+| 苔藓绿 | `#4A6B3A` |
+| 琥珀金 | `#C4944A` |
+| 石板灰 / 干花色 / 墨水黑 | `#7B8B6F` / `#B8937A` / `#2C2416` |
 
-字体：Space Grotesk（标题）/ JetBrains Mono（数据）/ Inter（正文）。
-硬边切割（圆角 2–4px）、3D 深度阴影、霓光辉光、液态光带扫过、金属拉丝纹理。
+字体 Cormorant Garamond / EB Garamond / IM Fell English / Noto Serif SC。
+羊皮纸纹理、铜版画线框、火漆印章、标本标签、手写拉丁学名、植物 SVG 插画
+(`PlantArt.vue`:大麦 / 橡木 / 石楠 / 泥煤苔 / 海藻 / 松 / 苹果 / 樱花)。
 
-## 页面（6 页）
+## 技术栈
 
-| 路由 | 页面 | 说明 |
-|------|------|------|
-| `/` | HomeView | 炼金入口：品牌标题 / 搜索 / 热门酒款 3D 卡 / 最近生成 |
-| `/cabinet` | CabinetView | THE VAULT 暗黑金属酒窖，分层陈列舱 |
-| `/confirm/:id` | ConfirmView | 数据面板 + 风味频谱 + 置信度进度条 |
-| `/template/:id` | TemplateView | 3D 旋转模板预览 + 感受输入（4 套模板） |
-| `/result/:id` | ResultView | 炼金动画 → 图鉴卡翻转 ×2 → 全屏放大 → 保存/分享 |
-| `/collection` | CollectionView | 酸性网格画廊（localStorage 持久化） |
-
-4 套模板：Acid Chrome / Void Black / Neon Spectrum / Liquid Metal。
+Vue 3 + Vue Router(Hash)+ Vite 5 + Tailwind 3。植物图鉴牌(`BotanicalPlate.vue`)
+与风味轮均为程序化 SVG 渲染;生产环境对应后端出图 + FFmpeg 视频合成(PRD §5)。
 
 ## 开发
 
 ```bash
 pnpm install
-pnpm dev        # 开发服务器
-pnpm build      # 生产构建
-pnpm preview    # 预览构建产物
+pnpm dev      # 开发
+pnpm build    # 构建到 dist/
+pnpm preview  # 预览
 ```
 
-## 与生产环境的差异
+## 部署
 
-本原型用纯 CSS/DOM 程序化渲染品鉴卡（`TastingCard.vue`）作为「炼金产物」保底视觉。
-生产环境中该步骤由后端 `POST /api/generate-card` 调用 **豆包 Seedream 5.0** 出图，
-数据采集 / 风味提炼由 `POST /api/search`、`POST /api/extract-flavors` 提供（见 PRD §5.3）。
+GitHub Actions(`.github/workflows/deploy.yml`)构建 `dist/` 发布到 GitHub Pages,
+自定义域名 `wszzz.site`(见 `public/CNAME`)。
